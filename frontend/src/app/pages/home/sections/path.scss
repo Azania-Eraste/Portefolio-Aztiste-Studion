@@ -234,6 +234,24 @@
   color: var(--accent);
 }
 
+// Barre qui démarre près du bord droit : le libellé passe à sa gauche
+.bar.late {
+  min-width: 0;
+  padding: 0;
+  // Le masque de fondu des barres « en cours » couperait le libellé placé à l'extérieur
+  -webkit-mask-image: none;
+  mask-image: none;
+
+  .bar-inner {
+    position: absolute;
+    right: calc(100% + 12px);
+  }
+
+  .chev {
+    display: none;
+  }
+}
+
 // --- Carte de détail ------------------------------------------------------
 
 .card {

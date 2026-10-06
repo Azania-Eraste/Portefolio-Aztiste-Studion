@@ -98,6 +98,7 @@ export class Expertise {
       if (!map.has(s.group)) map.set(s.group, { key: s.group, label: s.group_label, skills: [] });
       map.get(s.group)!.skills.push(s);
     }
+    for (const g of map.values()) g.skills.sort((a, b) => b.level - a.level);
     return [...map.values()].sort((a, b) => ORDER.indexOf(a.key) - ORDER.indexOf(b.key));
   });
 

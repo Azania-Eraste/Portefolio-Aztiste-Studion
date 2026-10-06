@@ -39,7 +39,7 @@ const fr = {
   'meta.title': 'Aztiste Studio — Design graphique & développement logiciel',
 
   'site.tagline': 'Studio de design graphique & de développement logiciel',
-  'site.location': 'Basé à Paris, disponible partout',
+  'site.location': 'Basé à Bonoua, Côte d’Ivoire — disponible partout',
   'nav.studio': 'Pôles',
   'nav.work': 'Projets',
   'nav.expertise': 'Expertise',
@@ -180,7 +180,7 @@ const en: Record<Key, string> = {
   'meta.title': 'Aztiste Studio — Graphic design & software development',
 
   'site.tagline': 'Graphic design & software development studio',
-  'site.location': 'Based in Paris, available worldwide',
+  'site.location': 'Based in Bonoua, Côte d’Ivoire — available worldwide',
   'nav.studio': 'Practices',
   'nav.work': 'Work',
   'nav.expertise': 'Expertise',

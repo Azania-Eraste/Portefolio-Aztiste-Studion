@@ -45,7 +45,9 @@ const MANIFESTO = t('studio.manifesto');
             [attr.aria-labelledby]="'pole-' + p.id">
             <header>
               <span class="mono letter">{{ p.index }}</span>
-              <span class="mono count">{{ 'studio.count' | t: { n: count(p.id) } }}</span>
+              @if (count(p.id) !== '00') {
+                <span class="mono count">{{ 'studio.count' | t: { n: count(p.id) } }}</span>
+              }
             </header>
 
             <p class="big display" aria-hidden="true">{{ p.short }}</p>
@@ -58,6 +60,7 @@ const MANIFESTO = t('studio.manifesto');
               }
             </ul>
 
+            @if (count(p.id) !== '00') {
             <button type="button" class="cta mono" appMagnetic [strength]="0.2" [attr.data-cursor]="'cursor.details' | t"
               (click)="show(p.id)">
               {{ 'studio.cta' | t: { pole: p.short.toLowerCase() } }}
@@ -65,6 +68,7 @@ const MANIFESTO = t('studio.manifesto');
                 <path d="M1 7h12M8 2l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.4" />
               </svg>
             </button>
+            }
           </article>
         }
       </div>

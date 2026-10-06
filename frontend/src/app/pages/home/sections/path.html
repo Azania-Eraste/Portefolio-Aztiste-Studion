@@ -45,6 +45,7 @@
                   class="bar"
                   [class.ongoing]="b.ongoing"
                   [class.hatched]="b.e.kind !== 'work'"
+                  [class.late]="b.left > 62"
                   [style.left.%]="b.left"
                   [style.width.%]="b.ongoing ? 100 - b.left : b.width"
                   [style.--solid]="(b.ongoing ? (b.width / (100 - b.left)) * 100 : 100) + '%'"

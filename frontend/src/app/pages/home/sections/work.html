@@ -11,9 +11,11 @@
       @if (state().status === 'ready') {
         <div class="filters" role="group" [attr.aria-label]="'work.filter' | t">
           @for (f of filters; track f.id) {
+            @if (countFor(f.id)) {
             <button type="button" class="mono" [attr.aria-pressed]="filter.value() === f.id" (click)="filter.value.set(f.id)">
               {{ f.label | t }} <span class="n">{{ countFor(f.id) }}</span>
             </button>
+            }
           }
         </div>
         <p class="visually-hidden" aria-live="polite">{{ 'work.shown' | t: { n: visible().length } }}</p>

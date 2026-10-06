@@ -9,17 +9,14 @@ export const SITE = {
   logoLabel: 'L’aztiste',
   tagline: t('site.tagline'),
   season: '2026 — 2027',
-  location: t('site.location'), // TODO : ta ville (dans i18n.ts)
-  timezone: 'Europe/Paris',
-  email: 'hello@aztiste.studio', // TODO : ton adresse réelle
+  location: t('site.location'),
+  timezone: 'Africa/Abidjan',
+  email: 'kouadioazania@gmail.com',
   // Domaine déclaré sur plausible.io (statistiques sans cookies). Vide = aucun suivi.
   plausibleDomain: '',
   socials: [
-    // TODO : remplace par tes vrais liens
-    { label: 'Behance', href: 'https://www.behance.net/' },
-    { label: 'GitHub', href: 'https://github.com/' },
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/' },
-    { label: 'Instagram', href: 'https://www.instagram.com/' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/azania-kouadio/' },
+    { label: 'GitHub', href: 'https://github.com/Azania-Eraste' },
   ],
   nav: [
     { id: 'studio', label: t('nav.studio'), index: '01' },
@@ -65,8 +62,8 @@ export const POLES: {
       en: 'Turning that image into a product that works: fast, accessible, maintainable and a pleasure to use.',
     }),
     services: pick({
-      fr: ['Sites vitrines & e-commerce', 'Applications web (Angular)', 'API & back-office (Django)', 'Expériences 3D / WebGL', 'Maintenance & évolution'],
-      en: ['Brochure sites & e-commerce', 'Web applications (Angular)', 'APIs & back offices (Django)', '3D / WebGL experiences', 'Maintenance & evolution'],
+      fr: ['Applications mobiles (Flutter)', 'API & back-office (Django)', 'Applications web (Angular)', 'Sites vitrines & e-commerce', 'Déploiement & maintenance'],
+      en: ['Mobile apps (Flutter)', 'APIs & back offices (Django)', 'Web applications (Angular)', 'Brochure sites & e-commerce', 'Deployment & maintenance'],
     }),
   },
 ];
