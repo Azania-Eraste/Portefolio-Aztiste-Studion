@@ -1,4 +1,4 @@
-"""Remplit la base avec du contenu de démonstration (à remplacer depuis l'admin)."""
+"""Contenu du site tiré du CV de Kouadio Azania (modifiable ensuite depuis l'admin)."""
 
 from datetime import date
 
@@ -7,121 +7,149 @@ from django.core.management.base import BaseCommand
 from portfolio.models import Experience, Project, Skill
 
 PROJECTS = [
-    dict(title='Nébula OS', slug='nebula-os', client='Projet démo', year=2026, pole='dev', order=1,
-         category='WebGL', category_en='WebGL',
-         summary='Interface spatiale pour piloter une flotte de satellites en temps réel. Rendu Three.js, shaders sur mesure, 60 fps sur mobile.',
-         summary_en='A spatial interface to control a satellite fleet in real time. Three.js rendering, custom shaders, 60 fps on mobile.',
-         role='Direction artistique, développement front & WebGL', role_en='Art direction, front-end & WebGL development',
-         context='Les opérateurs suivaient leurs satellites sur des tableaux illisibles. Le brief : rendre la flotte compréhensible en un coup d’œil, sur grand écran comme sur tablette.',
-         context_en='Operators tracked their satellites on unreadable spreadsheets. The brief: make the fleet understandable at a glance, on a wall screen as well as on a tablet.',
-         approach='Une scène Three.js unique, des orbites dessinées en shaders, et une interface Angular pilotée par signals. Chaque donnée a été prototypée dans Figma avant d’être codée.',
-         approach_en='A single Three.js scene, orbits drawn in shaders, and an Angular interface driven by signals. Every data view was prototyped in Figma before being coded.',
-         result='Une interface temps réel à 60 fps, même sur tablette, et un temps de prise en main divisé par trois.',
-         result_en='A real-time interface running at 60 fps, even on tablets, and onboarding time cut by three.',
-         stack='Angular, Three.js, GLSL, Django', accent='#FF6E10'),
-    dict(title='Maison Wax', slug='maison-wax', client='Projet démo', year=2026, pole='design', order=2,
-         category='Identité visuelle', category_en='Visual identity',
-         summary='Logo, palette et système graphique pour une marque textile. Déclinaisons étiquettes, packaging et réseaux sociaux.',
-         summary_en='Logo, palette and graphic system for a textile brand. Applied to labels, packaging and social media.',
-         role='Identité visuelle, charte graphique', role_en='Visual identity, brand guidelines',
-         context='Une jeune marque de tissus wax voulait une image premium sans renier ses racines.',
-         context_en='A young wax-fabric brand wanted a premium image without turning its back on its roots.',
-         approach='Trente esquisses de monogramme, un motif dérivé des tissus, une palette de quatre couleurs et une grille pour toutes les déclinaisons.',
-         approach_en='Thirty monogram sketches, a pattern derived from the fabrics, a four-colour palette and a grid for every application.',
-         result='Une charte de 24 pages, des étiquettes, un packaging et des gabarits réseaux sociaux prêts à l’emploi.',
-         result_en='24-page brand guidelines, labels, packaging and ready-to-use social media templates.',
-         stack='Illustrator, Photoshop, Branding', accent='#FFB800'),
-    dict(title='Kora Market', slug='kora-market', client='Projet démo', year=2026, pole='dev', order=3,
-         category='E-commerce', category_en='E-commerce',
-         summary='Boutique headless pour une marque de mode africaine. Transitions de pages fluides, panier instantané, back-office Django.',
-         summary_en='Headless store for an African fashion brand. Smooth page transitions, instant cart, Django back office.',
+    dict(title='BabiLoc', slug='babiloc', client='BabiLoc — Abidjan', year=2025, pole='dev', order=1,
+         category='Application mobile', category_en='Mobile app',
+         summary='Application de location de biens — véhicules et immobilier — dans la ville d’Abidjan. Publiée sur les stores.',
+         summary_en='A rental app for vehicles and real estate in Abidjan. Published on the app stores.',
+         role='Lead développeur — architecture, back-end Django, application Flutter',
+         role_en='Lead developer — architecture, Django back end, Flutter app',
+         context='À Abidjan, louer un véhicule ou un logement passe encore beaucoup par le bouche-à-oreille et les échanges informels. '
+                 'BabiLoc réunit l’offre et la demande dans une seule application.',
+         context_en='In Abidjan, renting a vehicle or a home still relies heavily on word of mouth and informal exchanges. '
+                    'BabiLoc brings supply and demand together in a single app.',
+         approach='J’ai conçu l’architecture complète : une API Django pour la logique métier et une application Flutter pour Android et iOS. '
+                  'J’ai développé les modules critiques — réservations, authentification, notifications push et paiement — '
+                  'et piloté le périmètre fonctionnel avec des livraisons itératives.',
+         approach_en='I designed the full architecture: a Django API for the business logic and a Flutter app for Android and iOS. '
+                     'I built the critical modules — bookings, authentication, push notifications and payment — '
+                     'and drove the functional scope through iterative releases.',
+         result='Application publiée sur les stores, avec une pipeline de déploiement continu pour livrer chaque évolution rapidement.',
+         result_en='The app is live on the stores, with a continuous deployment pipeline to ship every change quickly.',
+         stack='Flutter, Dart, Django, API REST, PostgreSQL, CI/CD', accent='#FF6E10'),
+    dict(title='Smart Archive', slug='smart-archive', client='Projet personnel', year=2026, pole='dev', order=2,
+         category='Plateforme web', category_en='Web platform',
+         summary='Plateforme de gestion scolaire : comptes, établissements, inscriptions, dossiers et pédagogie, avec une API Django et un front Angular.',
+         summary_en='A school management platform: accounts, institutions, enrolments, records and teaching, with a Django API and an Angular front end.',
          role='Développement full-stack', role_en='Full-stack development',
-         context='Le site existant était lent et impossible à mettre à jour sans développeur.',
-         context_en='The existing site was slow and impossible to update without a developer.',
-         approach='Un front Angular découplé, une API Django REST, le paiement Stripe et un back-office pensé pour l’équipe marketing.',
-         approach_en='A decoupled Angular front end, a Django REST API, Stripe payments and a back office designed for the marketing team.',
-         result='Pages chargées en moins d’une seconde et catalogue géré en autonomie par la marque.',
-         result_en='Pages load in under a second and the brand manages its catalogue on its own.',
-         stack='Angular, Django REST, Stripe, PostgreSQL', accent='#FF5B2E'),
-    dict(title='Festival Nuits Bleues', slug='nuits-bleues', client='Projet démo', year=2025, pole='design', order=4,
-         category='Affiche & print', category_en='Poster & print',
-         summary='Série d’affiches, programme imprimé et signalétique pour un festival de musique. Typographie expressive, grille modulaire.',
-         summary_en='Poster series, printed programme and signage for a music festival. Expressive typography, modular grid.',
-         role='Direction artistique, print', role_en='Art direction, print',
-         context='Un festival de jazz qui voulait rajeunir son public sans perdre ses fidèles.',
-         context_en='A jazz festival that wanted to attract a younger crowd without losing its regulars.',
-         approach='Une typographie qui « joue » comme un instrument, une grille modulaire et une impression en deux tons pour tenir le budget.',
-         approach_en='Typography that “plays” like an instrument, a modular grid and two-tone printing to stay within budget.',
-         result='Six affiches, un programme de 32 pages et une signalétique déclinée sur trois scènes.',
-         result_en='Six posters, a 32-page programme and signage across three stages.',
-         stack='InDesign, Illustrator, Typographie', accent='#3D7BFF'),
-    dict(title='Pulse Analytics', slug='pulse-analytics', client='Projet démo', year=2025, pole='dev', order=5,
-         category='SaaS', category_en='SaaS',
-         summary='Tableau de bord temps réel pour suivre des millions d’événements. WebSockets, graphiques interactifs, design system complet.',
-         summary_en='Real-time dashboard to follow millions of events. WebSockets, interactive charts, a complete design system.',
-         role='UI design, développement full-stack', role_en='UI design, full-stack development',
-         context='Une startup data devait présenter ses métriques à des clients non techniques.',
-         context_en='A data startup needed to show its metrics to non-technical clients.',
-         approach='Un design system dessiné puis codé en composants Angular, et des données poussées en direct par Django Channels.',
-         approach_en='A design system drawn then coded as Angular components, with data pushed live by Django Channels.',
-         result='Un produit livré en dix semaines, et un design system réutilisé sur deux autres outils.',
-         result_en='A product shipped in ten weeks, and a design system reused across two other tools.',
-         stack='Angular Signals, Django Channels, Redis', accent='#7B61FF'),
-    dict(title='Kemet Café', slug='kemet-cafe', client='Projet démo', year=2025, pole='design', order=6,
-         category='Packaging', category_en='Packaging',
-         summary='Packaging et étiquettes pour une gamme de cafés de spécialité. Illustrations sur mesure, impression en deux tons.',
-         summary_en='Packaging and labels for a specialty coffee range. Custom illustrations, two-tone printing.',
-         role='Illustration, packaging', role_en='Illustration, packaging',
-         context='Une torréfaction artisanale voulait se distinguer en rayon.',
-         context_en='A craft coffee roaster wanted to stand out on the shelf.',
-         approach='Une illustration par origine, un système de couleurs par intensité et des étiquettes pensées pour l’impression artisanale.',
-         approach_en='One illustration per origin, a colour system by roast intensity and labels designed for small-batch printing.',
-         result='Une gamme de cinq cafés reconnaissable au premier regard.',
-         result_en='A five-coffee range recognisable at first glance.',
-         stack='Illustrator, Procreate, Packaging', accent='#C8553D'),
-    dict(title='Archipel', slug='archipel', client='Projet démo', year=2025, pole='dev', order=7,
-         category='Site éditorial', category_en='Editorial website',
-         summary='Magazine numérique sur l’architecture insulaire. Typographie expressive, scroll narratif, CMS sur mesure.',
-         summary_en='A digital magazine about island architecture. Expressive typography, narrative scrolling, custom CMS.',
-         role='Design éditorial, développement', role_en='Editorial design, development',
-         context='Une revue papier qui passait au numérique sans vouloir perdre son âme typographique.',
-         context_en='A print magazine going digital without losing its typographic soul.',
-         approach='Des gabarits éditoriaux dessinés comme des doubles pages, un scroll narratif GSAP et un CMS Wagtail.',
-         approach_en='Editorial templates designed like spreads, GSAP narrative scrolling and a Wagtail CMS.',
-         result='Un magazine lu en moyenne six minutes par article.',
-         result_en='A magazine read for six minutes per article on average.',
-         stack='Angular, GSAP, Django, Wagtail', accent='#2EE6D6'),
+         context='Dans beaucoup d’établissements, inscriptions et dossiers d’élèves vivent encore sur papier ou dans des tableurs dispersés.',
+         context_en='In many schools, enrolments and student records still live on paper or in scattered spreadsheets.',
+         approach='Une API Django REST découpée en modules métier (comptes, établissements, inscriptions, dossiers, pédagogie) '
+                  'et une application Angular qui la consomme.',
+         approach_en='A Django REST API split into business modules (accounts, institutions, enrolments, records, teaching) '
+                     'and an Angular app consuming it.',
+         result='Une base complète pour numériser le suivi administratif et pédagogique d’un établissement.',
+         result_en='A complete foundation to digitise a school’s administrative and teaching records.',
+         stack='Django, API REST, Angular, TypeScript', accent='#7B61FF',
+         repo_url='https://github.com/Azania-Eraste/Smart_Archive_Backend'),
+    dict(title='SmartBin', slug='smartbin', client='Projet IoT', year=2026, pole='dev', order=3,
+         category='IoT', category_en='IoT',
+         summary='Supervision en temps réel du remplissage des poubelles urbaines : capteur ESP32, backend Flask, tableau de bord en direct.',
+         summary_en='Real-time monitoring of urban bin fill levels: ESP32 sensor, Flask back end, live dashboard.',
+         role='Conception IoT, back-end et tableau de bord', role_en='IoT design, back end and dashboard',
+         context='Les camions de collecte passent souvent devant des poubelles vides, et trop tard devant celles qui débordent.',
+         context_en='Collection trucks often stop at empty bins, and too late at overflowing ones.',
+         approach='Un ESP32 équipé d’un capteur ultrasonique HC-SR04 mesure le niveau et l’envoie au backend Flask, '
+                  'qui le diffuse en direct au tableau de bord web (Server-Sent Events, avec repli en polling).',
+         approach_en='An ESP32 with an HC-SR04 ultrasonic sensor measures the level and sends it to a Flask back end, '
+                     'which streams it live to the web dashboard (Server-Sent Events, with a polling fallback).',
+         result='Un prototype fonctionnel avec alertes de débordement, pensé pour optimiser les tournées et collecter des données '
+                'pour une future prédiction du remplissage.',
+         result_en='A working prototype with overflow alerts, designed to optimise collection rounds and gather data '
+                   'for future fill-level prediction.',
+         stack='ESP32, Python, Flask, SSE, JavaScript', accent='#2EE6D6',
+         repo_url='https://github.com/Azania-Eraste/Gestion-des-dechets'),
+    dict(title='Marketplace Django', slug='ecommerce-vivrier', client='Projet académique — IIT', year=2025, pole='dev', order=4,
+         category='E-commerce', category_en='E-commerce',
+         summary='Marketplace de produits vivriers multi-vendeurs, avec livreurs et paiement en ligne, réalisée à l’issue du cours de programmation web avec Python.',
+         summary_en='A multi-vendor marketplace for food produce, with couriers and online payment, built at the end of the Python web programming course.',
+         role='Développement full-stack', role_en='Full-stack development',
+         context='Projet de fin de cours de programmation web à l’Institut Ivoirien de Technologie : '
+                 'livrer une boutique en ligne complète, du catalogue jusqu’à la livraison.',
+         context_en='End-of-course project for web programming at the Institut Ivoirien de Technologie: '
+                    'deliver a complete online store, from catalogue to delivery.',
+         approach='Une application Django avec trois rôles — acheteur, vendeur et livreur — chacun avec son tableau de bord. '
+                  'Panier, commandes confirmées par le vendeur, paiement Stripe et code de livraison pour valider la remise du colis. '
+                  'Un vendeur ne peut pas acheter ses propres produits.',
+         approach_en='A Django application with three roles — buyer, seller and courier — each with its own dashboard. '
+                     'Cart, seller-confirmed orders, Stripe payment and a delivery code to confirm hand-over. '
+                     'Sellers cannot buy their own products.',
+         result='Une marketplace 100 % fonctionnelle, de la navigation dans le catalogue jusqu’à la livraison confirmée.',
+         result_en='A fully working marketplace, from browsing the catalogue to a confirmed delivery.',
+         stack='Python, Django, Stripe, JavaScript', accent='#3D7BFF',
+         repo_url='https://github.com/Azania-Eraste/Projet_final_Django'),
+    dict(title='Griot', slug='griot', client='Projet personnel', year=2025, pole='dev', order=5,
+         category='Application mobile', category_en='Mobile app',
+         summary='Application mobile qui fait découvrir les contes et légendes des régions de Côte d’Ivoire.',
+         summary_en='A mobile app to discover the tales and legends of Côte d’Ivoire’s regions.',
+         role='Développement mobile', role_en='Mobile development',
+         context='Les contes et légendes ivoiriens se transmettent surtout à l’oral, et se perdent avec le temps.',
+         context_en='Ivorian tales and legends are mostly passed on orally, and fade over time.',
+         approach='Une application Flutter qui organise les récits par région, pour les lire facilement sur mobile.',
+         approach_en='A Flutter app that organises the stories by region, to read them easily on a phone.',
+         result='Une application multiplateforme (Android, iOS) au service du patrimoine culturel.',
+         result_en='A cross-platform app (Android, iOS) serving cultural heritage.',
+         stack='Flutter, Dart', accent='#FFB800',
+         repo_url='https://github.com/Azania-Eraste/Griot'),
+    dict(title='Gestion de parc informatique', slug='odoo-parc-informatique', client='Projet académique', year=2025, pole='dev', order=6,
+         category='Module Odoo', category_en='Odoo module',
+         summary='Module Odoo de gestion de parc informatique : inventaire des équipements, maintenance planifiée et portail.',
+         summary_en='An Odoo module for IT asset management: equipment inventory, scheduled maintenance and a portal.',
+         role='Développement Odoo', role_en='Odoo development',
+         context='Suivre qui utilise quel équipement, et quand il doit être entretenu, devient vite ingérable dans un tableur.',
+         context_en='Tracking who uses which device, and when it needs servicing, quickly becomes unmanageable in a spreadsheet.',
+         approach='Un module Odoo sur mesure (it_asset_management) : modèles d’équipements, tâches de maintenance automatiques '
+                  'planifiées par cron et un portail pour les utilisateurs.',
+         approach_en='A custom Odoo module (it_asset_management): equipment models, automatic maintenance tasks '
+                     'scheduled by cron and a user portal.',
+         result='Un module installable qui centralise le parc informatique dans l’ERP.',
+         result_en='An installable module that brings IT asset management into the ERP.',
+         stack='Python, Odoo, XML', accent='#C8553D',
+         repo_url='https://github.com/Azania-Eraste/Projet_final_addons'),
 ]
+
+# Projets fictifs du contenu de démo : masqués (pas supprimés, leur fiche reste dans l'admin)
+DEMO_PROJECTS = ['nebula-os', 'maison-wax', 'kora-market', 'nuits-bleues', 'pulse-analytics', 'kemet-cafe', 'archipel']
 
 EXPERIENCES = [
-    dict(role='Fondateur & directeur créatif', role_en='Founder & creative director', company='Aztiste Studio',
-         location='Remote', kind='work', pole='both', start=date(2024, 1, 1), end=None, order=1,
-         description='Deux pôles : design graphique (identité, print, UI) et développement logiciel (web, API, WebGL).',
-         description_en='Two practices: graphic design (identity, print, UI) and software development (web, APIs, WebGL).'),
-    dict(role='Développeur full-stack', role_en='Full-stack developer', company='Structure à renseigner',
-         location='Ville', kind='work', pole='dev', start=date(2022, 9, 1), end=date(2023, 12, 31), order=2,
-         description='Applications Angular / Django en production, API REST, CI/CD.',
-         description_en='Angular / Django applications in production, REST APIs, CI/CD.'),
-    dict(role='Graphiste freelance', role_en='Freelance graphic designer', company='Clients divers',
-         location='Remote', kind='side', pole='design', start=date(2021, 3, 1), end=date(2023, 12, 31), order=3,
-         description='Logos, affiches et supports print pour des associations, artistes et petites entreprises.',
-         description_en='Logos, posters and print material for non-profits, artists and small businesses.'),
-    dict(role='Formation en informatique', role_en='Computer science studies', company='École à renseigner',
-         location='Ville', kind='education', pole='dev', start=date(2020, 9, 1), end=date(2022, 6, 30), order=4,
-         description='Développement logiciel, bases de données, algorithmique.',
-         description_en='Software development, databases, algorithms.'),
+    dict(role='Stagiaire développeur full-stack web', role_en='Full-stack web developer intern', company='ATG',
+         location='Bonoua, Yaou', kind='work', pole='dev', start=date(2026, 6, 1), end=None, order=1,
+         description='Déploiement et intégration d’applications métier. Administration et sécurisation des systèmes d’information. '
+                     'Support technique et assistance utilisateurs. Gestion des données et reporting.',
+         description_en='Deploying and integrating business applications. Administering and securing information systems. '
+                        'Technical support and user assistance. Data management and reporting.'),
+    dict(role='Lead développeur', role_en='Lead developer', company='BabiLoc',
+         location='Abidjan', kind='work', pole='dev', start=date(2025, 6, 1), end=None, order=2,
+         description='Architecture et déploiement de BabiLoc (Flutter + Django) sur les stores. Modules critiques : réservations, '
+                     'authentification, notifications push et paiement. Pipeline de déploiement continu, livraisons itératives.',
+         description_en='Architected and shipped BabiLoc (Flutter + Django) to the app stores. Critical modules: bookings, '
+                        'authentication, push notifications and payment. Continuous deployment pipeline, iterative releases.'),
+    dict(role='Licence en génie logiciel', role_en='Bachelor’s degree in software engineering', company='Institut Ivoirien de Technologie',
+         location='Grand-Bassam', kind='education', pole='dev', start=date(2023, 9, 1), end=date(2026, 6, 30), order=3,
+         description='Computer Science, option génie logiciel.',
+         description_en='Computer Science, software engineering track.'),
 ]
 
+# Expériences fictives du contenu de démo : supprimées
+DEMO_EXPERIENCES = [
+    ('Développeur full-stack', 'Structure à renseigner'),
+    ('Graphiste freelance', 'Clients divers'),
+    ('Formation en informatique', 'École à renseigner'),
+    ('Fondateur & directeur créatif', 'Aztiste Studio'),
+]
+
+# (nom, nom anglais, groupe, niveau 0-100) — niveaux à ajuster dans l'admin
 SKILLS = [
-    ('Identité visuelle', 'Visual identity', 'design', 92), ('Illustrator', '', 'design', 90),
-    ('Photoshop', '', 'design', 88), ('InDesign / Print', '', 'design', 82), ('Typographie', 'Typography', 'design', 85),
-    ('Figma', '', 'design', 88),
-    ('Angular', '', 'frontend', 95), ('TypeScript', '', 'frontend', 92), ('RxJS / Signals', '', 'frontend', 88),
-    ('SCSS / CSS moderne', 'SCSS / modern CSS', 'frontend', 90),
-    ('Django', '', 'backend', 92), ('Django REST Framework', '', 'backend', 90), ('PostgreSQL', '', 'backend', 82),
-    ('Python', '', 'backend', 90),
-    ('Three.js', '', 'creative', 85), ('GLSL', '', 'creative', 72), ('GSAP', '', 'creative', 90),
-    ('Git', '', 'tooling', 90), ('Docker', '', 'tooling', 78), ('CI/CD', '', 'tooling', 75), ('Linux', '', 'tooling', 80),
+    ('Python', '', 'backend', 90), ('Django', '', 'backend', 90), ('API REST', 'REST APIs', 'backend', 88),
+    ('PostgreSQL', '', 'backend', 80), ('MySQL', '', 'backend', 78), ('Flask', '', 'backend', 70), ('Odoo', '', 'backend', 65),
+    ('Flutter / Dart', '', 'frontend', 85), ('Angular', '', 'frontend', 72), ('TypeScript', '', 'frontend', 72),
+    ('Git / GitHub', '', 'tooling', 88), ('CI/CD', '', 'tooling', 78), ('n8n', '', 'tooling', 75),
+    ('Identité visuelle', 'Visual identity', 'design', 75), ('Figma', '', 'design', 75), ('Photoshop', '', 'design', 70),
+]
+
+# Compétences du contenu de démo absentes du CV : supprimées
+DEMO_SKILLS = [
+    'Illustrator', 'InDesign / Print', 'Typographie', 'RxJS / Signals', 'SCSS / CSS moderne', 'Django REST Framework',
+    'Three.js', 'GLSL', 'GSAP', 'Git', 'Docker', 'Linux',
 ]
 
 
@@ -137,9 +165,14 @@ def fill(model, lookup, values):
 
 
 class Command(BaseCommand):
-    help = 'Ajoute le contenu de démonstration (complète sans écraser l’existant).'
+    help = 'Charge le contenu du CV (complète sans écraser l’existant) et retire le contenu de démo.'
 
     def handle(self, *args, **options):
+        Project.objects.filter(slug__in=DEMO_PROJECTS).update(featured=False)
+        for role, company in DEMO_EXPERIENCES:
+            Experience.objects.filter(role=role, company=company).delete()
+        Skill.objects.filter(name__in=DEMO_SKILLS).delete()
+
         for p in PROJECTS:
             fill(Project, {'slug': p['slug']}, p)
         for e in EXPERIENCES:
@@ -147,4 +180,4 @@ class Command(BaseCommand):
         for i, (name, name_en, group, level) in enumerate(SKILLS):
             fill(Skill, {'name': name}, dict(name_en=name_en, group=group, level=level, order=i))
         if options['verbosity']:
-            self.stdout.write(self.style.SUCCESS('Contenu de démonstration ajouté.'))
+            self.stdout.write(self.style.SUCCESS('Contenu du CV chargé.'))

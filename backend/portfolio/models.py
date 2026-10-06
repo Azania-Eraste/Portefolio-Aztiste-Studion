@@ -98,10 +98,10 @@ class Experience(models.Model):
 class Skill(models.Model):
     class Group(models.TextChoices):
         DESIGN = 'design', 'Design graphique'
-        FRONTEND = 'frontend', 'Front-end'
+        FRONTEND = 'frontend', 'Front-end & mobile'
         BACKEND = 'backend', 'Back-end'
         CREATIVE = 'creative', 'Creative / Motion'
-        TOOLING = 'tooling', 'Outils / DevOps'
+        TOOLING = 'tooling', 'DevOps & outils'
 
     name = models.CharField('nom', max_length=60)
     name_en = models.CharField('nom (EN)', max_length=60, blank=True)

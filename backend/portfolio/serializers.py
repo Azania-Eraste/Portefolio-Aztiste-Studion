@@ -11,7 +11,7 @@ EN_LABELS = {
     'Expérience': 'Experience',
     'Formation': 'Education',
     'Freelance / projet': 'Freelance / project',
-    'Outils / DevOps': 'Tools / DevOps',
+    'DevOps & outils': 'DevOps & tools',
 }
 
 
