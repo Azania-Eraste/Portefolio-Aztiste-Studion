@@ -55,6 +55,8 @@ const fr = {
   'header.menu': 'Menu',
   'header.close': 'Fermer',
   'header.lang': 'Read this site in English',
+  'header.cv': 'CV',
+  'header.cvLabel': 'Télécharger mon CV (PDF)',
 
   'loader.loading': 'Chargement du portfolio…',
   'loader.ready': 'Le site est prêt.',
@@ -196,6 +198,8 @@ const en: Record<Key, string> = {
   'header.menu': 'Menu',
   'header.close': 'Close',
   'header.lang': 'Lire ce site en français',
+  'header.cv': 'Resume',
+  'header.cvLabel': 'Download my resume (PDF, in French)',
 
   'loader.loading': 'Loading the portfolio…',
   'loader.ready': 'The site is ready.',

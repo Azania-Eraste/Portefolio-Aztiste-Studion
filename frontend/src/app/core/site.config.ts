@@ -12,6 +12,7 @@ export const SITE = {
   location: t('site.location'),
   timezone: 'Africa/Abidjan',
   email: 'kouadioazania@gmail.com',
+  cv: '/cv/CV-Kouadio-Azania.pdf',
   // Domaine déclaré sur plausible.io (statistiques sans cookies). Vide = aucun suivi.
   plausibleDomain: '',
   socials: [

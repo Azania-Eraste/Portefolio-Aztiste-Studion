@@ -40,6 +40,10 @@ import { TPipe, LANG, setLang } from '../core/i18n';
         {{ (menuOpen() ? 'header.close' : 'header.menu') | t }}
       </button>
 
+      <a class="cv mono" [href]="site.cv" download="CV-Kouadio-Azania.pdf" [attr.aria-label]="'header.cvLabel' | t">
+        {{ 'header.cv' | t }} <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1v7M2.5 5 6 8.5 9.5 5M1.5 11h9" fill="none" stroke="currentColor" stroke-width="1.3" /></svg>
+      </a>
+
       <button class="lang mono" type="button" (click)="switchLang()" [attr.aria-label]="'header.lang' | t" [attr.lang]="other">
         {{ other.toUpperCase() }}
       </button>
@@ -54,6 +58,7 @@ import { TPipe, LANG, setLang } from '../core/i18n';
         }
       </nav>
       <a class="mono accent" [href]="'mailto:' + site.email">{{ site.email }}</a>
+      <a class="mono" [href]="site.cv" download="CV-Kouadio-Azania.pdf">{{ 'header.cvLabel' | t }} ↓</a>
     </div>
   `,
   styles: `
@@ -124,6 +129,20 @@ import { TPipe, LANG, setLang } from '../core/i18n';
     .idx {
       margin-right: 6px;
       opacity: 0.5;
+    }
+    .cv {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 16px;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      transition: background 0.3s, color 0.3s;
+      &:hover {
+        background: #fff;
+        color: #000;
+      }
     }
     .lang {
       min-width: 44px;
