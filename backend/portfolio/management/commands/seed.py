@@ -105,6 +105,40 @@ PROJECTS = [
          result_en='An installable module that brings IT asset management into the ERP.',
          stack='Python, Odoo, XML', accent='#C8553D',
          repo_url='https://github.com/Azania-Eraste/Projet_final_addons'),
+    dict(title='Affiches AEEECI', slug='affiches-aeeeci', client='AEEECI District Sion', year=2025, pole='design', order=7,
+         category='Affiche & réseaux sociaux', category_en='Posters & social media',
+         summary='Création des affiches des activités d’une association de jeunes, publiées sur sa page Facebook.',
+         summary_en='Posters for a youth association’s events, published on its Facebook page.',
+         role='Design graphique', role_en='Graphic design',
+         context='L’association AEEECI District Sion rassemble des jeunes autour de nombreuses activités. '
+                 'Chacune a besoin d’une affiche claire et attirante pour mobiliser sur les réseaux sociaux.',
+         context_en='The AEEECI District Sion association brings young people together around many events. '
+                    'Each one needs a clear, eye-catching poster to rally people on social media.',
+         approach='Des affiches pensées pour être lues en un coup d’œil sur un fil d’actualité : hiérarchie nette entre '
+                  'l’événement, la date et le lieu, couleurs de l’association et format adapté à Facebook.',
+         approach_en='Posters designed to be read at a glance in a news feed: a clear hierarchy between the event, '
+                     'the date and the venue, the association’s colours and a Facebook-friendly format.',
+         result='Une série d’affiches publiées sur la page de l’association, avec une image cohérente d’un événement à l’autre.',
+         result_en='A series of posters published on the association’s page, with a consistent look from one event to the next.',
+         stack='Canva, Affinity', accent='#FFB800',
+         live_url='https://web.facebook.com/profile.php?id=61579980350864'),
+    dict(title='Octobre Rose', slug='octobre-rose-motion', client='Projet personnel', year=2026, pole='design', order=8,
+         category='Motion design', category_en='Motion design',
+         summary='Vidéo courte de sensibilisation au cancer du sein, réalisée en vibe motion design pour les réseaux sociaux.',
+         summary_en='A short breast cancer awareness video, made with vibe motion design for social media.',
+         role='Motion design', role_en='Motion design',
+         context='« 1 femme sur 9 sera touchée par le cancer du sein au cours de sa vie. » Un chiffre fort, '
+                 'qui doit être compris en quelques secondes dans un fil d’actualité.',
+         context_en='“1 woman in 9 will develop breast cancer in her lifetime.” A powerful figure that has to land '
+                    'in a few seconds in a news feed.',
+         approach='Une animation au format vertical, construite en vibe motion design : le message est décrit, généré '
+                  'puis affiné itération après itération, en gardant le chiffre clé au centre de l’écran.',
+         approach_en='A vertical animation built with vibe motion design: the message is described, generated '
+                     'and then refined iteration after iteration, keeping the key figure centre stage.',
+         result='Un reel publié sur Facebook pour porter le message de prévention d’Octobre Rose.',
+         result_en='A reel published on Facebook to carry the Pink October prevention message.',
+         stack='Vibe motion design, Motion design', accent='#FF5B9A',
+         live_url='https://web.facebook.com/reel/2533563517133511'),
 ]
 
 # Projets fictifs du contenu de démo : masqués (pas supprimés, leur fiche reste dans l'admin)
@@ -144,6 +178,8 @@ SKILLS = [
     ('Flutter / Dart', '', 'frontend', 85), ('Angular', '', 'frontend', 72), ('TypeScript', '', 'frontend', 72),
     ('Git / GitHub', '', 'tooling', 88), ('CI/CD', '', 'tooling', 78), ('n8n', '', 'tooling', 75),
     ('Identité visuelle', 'Visual identity', 'design', 75), ('Figma', '', 'design', 75), ('Photoshop', '', 'design', 70),
+    ('Canva', '', 'design', 85), ('Affinity', '', 'design', 75),
+    ('Vibe motion design', '', 'creative', 72),
 ]
 
 # Compétences du contenu de démo absentes du CV : supprimées

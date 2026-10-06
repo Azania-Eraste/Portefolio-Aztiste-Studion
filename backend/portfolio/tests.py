@@ -17,7 +17,7 @@ class ApiTests(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(len(res.json()), Project.objects.filter(featured=True).count())
         self.assertIsInstance(res.json()[0]['stack'], list)
-        self.assertEqual({p['pole'] for p in res.json()}, {'dev'})
+        self.assertEqual({p['pole'] for p in res.json()}, {'design', 'dev'})
 
     def test_skills_and_experiences(self):
         self.assertEqual(self.client.get('/api/skills/').status_code, 200)
@@ -58,7 +58,7 @@ class CaseStudyTests(TestCase):
         self.assertTrue(data['context'])
         self.assertEqual(data['pole_label'], 'Développement logiciel')
         # Premier projet : le précédent boucle sur le dernier
-        self.assertEqual(data['prev']['slug'], 'odoo-parc-informatique')
+        self.assertEqual(data['prev']['slug'], 'octobre-rose-motion')
         self.assertEqual(data['next']['slug'], 'smart-archive')
         self.assertEqual(data['images'], [])
 
