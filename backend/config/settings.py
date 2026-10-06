@@ -8,6 +8,8 @@ Les valeurs par défaut ne servent qu'au développement local.
 import os
 from pathlib import Path
 
+import dj_database_url
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -21,6 +23,11 @@ SECRET_KEY = os.environ.get(
 )
 DEBUG = os.environ.get('DJANGO_DEBUG', '1') == '1'
 ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1')
+# Render fournit le nom d'hôte du service (xxx.onrender.com)
+if os.environ.get('RENDER_EXTERNAL_HOSTNAME'):
+    ALLOWED_HOSTS.append(os.environ['RENDER_EXTERNAL_HOSTNAME'])
+# Derrière le proxy HTTPS de Render : sinon l'admin refuse les connexions (erreur CSRF)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -36,6 +43,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -64,11 +72,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+# DATABASE_URL (Postgres sur Render) ; SQLite en local
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+        conn_health_checks=True,  # Neon met la base en veille : on vérifie la connexion avant réutilisation
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -85,6 +95,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STORAGES = {
+    'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+    'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'},
+}
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -98,7 +112,8 @@ REST_FRAMEWORK = {
 }
 
 # En dev, Angular passe par le proxy (même origine). En prod, lister le domaine du front.
-CORS_ALLOWED_ORIGINS = env_list('DJANGO_CORS_ORIGINS', 'http://localhost:4200')
+# Un « / » final est toléré (« https://site.app/ ») : corsheaders refuse les origines avec chemin
+CORS_ALLOWED_ORIGINS = [o.rstrip('/') for o in env_list('DJANGO_CORS_ORIGINS', 'http://localhost:4200')]
 
 # Adresse qui reçoit une copie des messages de contact (optionnel).
 CONTACT_NOTIFY_EMAIL = os.environ.get('CONTACT_NOTIFY_EMAIL', '')
