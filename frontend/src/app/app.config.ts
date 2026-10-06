@@ -1,0 +1,19 @@
+import { provideHttpClient, withFetch } from '@angular/common/http';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling, withViewTransitions } from '@angular/router';
+
+import { routes } from './app.routes';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideRouter(
+      routes,
+      withComponentInputBinding(),
+      withInMemoryScrolling({ scrollPositionRestoration: 'enabled' }),
+      // Transition native du navigateur : la carte du carrousel devient la couverture de l'étude de cas
+      withViewTransitions({ skipInitialTransition: true }),
+    ),
+    provideHttpClient(withFetch()),
+  ],
+};

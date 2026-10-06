@@ -1,0 +1,98 @@
+<article class="case" id="top" tabindex="-1">
+  @if (project.isLoading() && !project.hasValue()) {
+    <p class="label state" aria-live="polite">&gt; {{ 'case.loading' | t }}</p>
+  } @else if (project.error()) {
+    <div class="state">
+      <p class="display missing">404</p>
+      <p>{{ 'case.notFound' | t }}</p>
+      <button type="button" class="mono back" (click)="motion.scrollTo('work')">{{ 'case.back' | t }}</button>
+    </div>
+  } @else if (project.value(); as p) {
+    <header class="head">
+      <button type="button" class="mono back" (click)="motion.scrollTo('work')">{{ 'case.back' | t }}</button>
+      <p class="label">
+        {{ 'case.label' | t }} · <span class="tag" [class.design]="p.pole === 'design'">{{ p.pole_label }}</span>
+      </p>
+      <h1 class="display title">{{ p.title }}</h1>
+      <app-brush class="stroke" />
+      <p class="lead">{{ p.summary }}</p>
+
+      <dl class="facts">
+        @if (p.client) {
+          <div><dt class="mono">{{ 'case.client' | t }}</dt><dd>{{ p.client }}</dd></div>
+        }
+        <div><dt class="mono">{{ 'case.year' | t }}</dt><dd>{{ p.year }}</dd></div>
+        @if (p.role) {
+          <div><dt class="mono">{{ 'case.role' | t }}</dt><dd>{{ p.role }}</dd></div>
+        }
+        <div><dt class="mono">{{ 'case.category' | t }}</dt><dd>{{ p.category }}</dd></div>
+        @if (p.stack.length) {
+          <div class="wide"><dt class="mono">{{ 'case.tools' | t }}</dt><dd>{{ p.stack.join(' · ') }}</dd></div>
+        }
+      </dl>
+    </header>
+
+    <!-- Même nom de transition que la carte du carrousel : elle « devient » cette couverture -->
+    <div class="cover" [style.view-transition-name]="'p-' + p.slug">
+      @if (p.cover) {
+        <img [src]="p.cover" [alt]="p.title" />
+      } @else {
+        <div class="gen" [style.--c]="p.accent" aria-hidden="true">
+          <span class="display">{{ initials(p) }}</span>
+          <span class="mono">{{ p.category }} · {{ p.year }}</span>
+        </div>
+      }
+    </div>
+
+    <div class="chapters">
+      @for (c of chapters(p); track c[0]; let i = $index) {
+        <section class="chapter" appReveal>
+          <p class="mono num">0{{ i + 1 }}</p>
+          <h2 class="display">{{ c[0] | t }}</h2>
+          <p class="text">{{ c[1] }}</p>
+        </section>
+      }
+    </div>
+
+    @if (p.images.length) {
+      <section class="gallery" aria-labelledby="gallery-title">
+        <h2 id="gallery-title" class="label">{{ 'case.gallery' | t }}</h2>
+        <div class="grid">
+          @for (img of p.images; track img.url) {
+            <figure [class.wide]="img.wide" appReveal>
+              <img [src]="img.url" [alt]="img.caption" loading="lazy" />
+              @if (img.caption) {
+                <figcaption class="mono">{{ img.caption }}</figcaption>
+              }
+            </figure>
+          }
+        </div>
+      </section>
+    }
+
+    @if (p.live_url || p.repo_url) {
+      <div class="links">
+        @if (p.live_url) {
+          <a class="btn mono" [href]="p.live_url" target="_blank" rel="noopener">{{ 'case.visit' | t }}</a>
+        }
+        @if (p.repo_url) {
+          <a class="btn ghost mono" [href]="p.repo_url" target="_blank" rel="noopener">{{ 'case.code' | t }}</a>
+        }
+      </div>
+    }
+
+    @if (p.next) {
+      <nav class="next" [attr.aria-label]="'case.next' | t">
+        @if (p.prev) {
+          <a class="prev mono" [routerLink]="['/projets', p.prev.slug]">← {{ 'case.prev' | t }} · {{ p.prev.title }}</a>
+        }
+        <a class="next-link" [routerLink]="['/projets', p.next.slug]" [attr.data-cursor]="'case.next' | t">
+          <span class="mono">{{ 'case.next' | t }} →</span>
+          <span class="display">{{ p.next.title }}</span>
+          <app-brush class="stroke" />
+        </a>
+      </nav>
+    }
+  }
+</article>
+<app-footer />

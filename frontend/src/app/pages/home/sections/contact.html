@@ -1,0 +1,91 @@
+<section class="section contact" id="contact" tabindex="-1" aria-labelledby="contact-title">
+  <p class="label">{{ 'contact.label' | t }}</p>
+  <h2 id="contact-title" class="display title" appSplit>
+    {{ 'contact.t1' | t }}<br />{{ 'contact.t2' | t }} <em class="accent">{{ 'contact.t3' | t }}</em>
+  </h2>
+
+  <div class="layout">
+    <aside class="side">
+      <p class="mono">{{ 'contact.direct' | t }}</p>
+      <a class="mail" [href]="'mailto:' + site.email" [attr.data-cursor]="'cursor.write' | t">{{ site.email }}</a>
+      <p class="hint">{{ 'contact.hint' | t }}</p>
+    </aside>
+
+    @if (status() === 'sent') {
+      <div class="done" role="status">
+        <p class="display">{{ 'contact.done' | t }}<span class="accent">.</span></p>
+        <p>{{ 'contact.thanks' | t }}</p>
+        <button type="button" class="mono link" (click)="status.set('idle')">{{ 'contact.again' | t }}</button>
+      </div>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div class="field" [class.invalid]="error('name')">
+          <label for="f-name" class="mono">{{ 'contact.name' | t }}</label>
+          <input id="f-name" formControlName="name" autocomplete="name"
+            [attr.aria-invalid]="!!error('name')" aria-describedby="e-name" />
+          <p id="e-name" class="err">{{ error('name') }}</p>
+        </div>
+
+        <div class="field" [class.invalid]="error('email')">
+          <label for="f-email" class="mono">{{ 'contact.email' | t }}</label>
+          <input id="f-email" type="email" formControlName="email" autocomplete="email" inputmode="email"
+            [attr.aria-invalid]="!!error('email')" aria-describedby="e-email" />
+          <p id="e-email" class="err">{{ error('email') }}</p>
+        </div>
+
+        <div class="field">
+          <label for="f-company" class="mono">{{ 'contact.company' | t }}</label>
+          <input id="f-company" formControlName="company" autocomplete="organization" />
+        </div>
+
+        <fieldset class="field budgets">
+          <legend class="mono">{{ 'contact.need' | t }}</legend>
+          <div class="chips">
+            @for (sv of services; track sv.id) {
+              <label class="chip">
+                <input type="radio" formControlName="service" [value]="sv.id" />
+                <span>{{ sv.label }}</span>
+              </label>
+            }
+          </div>
+        </fieldset>
+
+        <fieldset class="field budgets">
+          <legend class="mono">{{ 'contact.budget' | t }}</legend>
+          <div class="chips">
+            @for (b of budgets; track b) {
+              <label class="chip">
+                <input type="radio" formControlName="budget" [value]="b" />
+                <span>{{ b }}</span>
+              </label>
+            }
+          </div>
+        </fieldset>
+
+        <div class="field full" [class.invalid]="error('message')">
+          <label for="f-message" class="mono">{{ 'contact.message' | t }}</label>
+          <textarea id="f-message" rows="5" formControlName="message"
+            [attr.aria-invalid]="!!error('message')" aria-describedby="e-message"></textarea>
+          <p id="e-message" class="err">{{ error('message') }}</p>
+        </div>
+
+        <div class="hp" aria-hidden="true">
+          <label for="f-website">{{ 'contact.honeypot' | t }}</label>
+          <input id="f-website" formControlName="website" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="actions full">
+          @if (status() === 'error') {
+            <p class="err" role="alert">{{ 'contact.failed' | t: { email: site.email } }}</p>
+          }
+          <button class="send" type="submit" appMagnetic [disabled]="status() === 'sending'" data-cursor="Go">
+            <span>{{ (status() === 'sending' ? 'contact.sending' : 'contact.send') | t }}</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M4 16 16 4M7 4h9v9" fill="none" stroke="currentColor" stroke-width="1.6" />
+            </svg>
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</section>

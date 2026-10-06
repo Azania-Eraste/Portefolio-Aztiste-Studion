@@ -1,0 +1,108 @@
+<section class="section" id="path" tabindex="-1" aria-labelledby="path-title">
+  <div class="section-head">
+    <p class="label">{{ 'path.label' | t }}</p>
+    <h2 id="path-title" class="display" appSplit>Timeline</h2>
+  </div>
+
+  @if (state().status === 'error') {
+    <p class="label" role="alert">&gt; {{ 'path.down' | t }}</p>
+  }
+
+  @if (bars().length) {
+    <div class="meta mono">
+      <span class="hint hint-desktop">{{ 'path.hintHover' | t }}</span>
+      <span class="hint hint-touch">{{ 'path.hintTouch' | t }}</span>
+      <ul class="legend" [attr.aria-label]="'path.legend' | t">
+        <li><span class="sw sw-work"></span>{{ 'path.work' | t }}</li>
+        <li><span class="sw sw-side"></span>{{ 'path.side' | t }}</li>
+        <li><span class="sw sw-now"></span>{{ 'path.now' | t }}</li>
+      </ul>
+    </div>
+
+    <div class="gantt" #gantt>
+      <div class="scroller" #scroller>
+        <div class="track" #track [style.--years]="axis().years.length - 1">
+          <!-- Axe des années -->
+          <div class="axis" aria-hidden="true">
+            @for (y of axis().years; track y; let last = $last) {
+              <span class="year mono" [class.future]="y > axis().years[axis().years.length - 3]"
+                [style.left.%]="yearPct(y)">{{ y }}</span>
+            }
+          </div>
+
+          <!-- Repère aujourd'hui -->
+          <div class="today" aria-hidden="true" [style.left.%]="todayPct()">
+            <span class="pin"></span>
+            <span class="mono tag">{{ 'path.today' | t }}</span>
+          </div>
+
+          <ol class="rows" [attr.aria-label]="'path.list' | t">
+            @for (b of bars(); track b.e.id) {
+              <li class="row" [class.is-active]="active() === b.e.id">
+                <button
+                  #bar
+                  type="button"
+                  class="bar"
+                  [class.ongoing]="b.ongoing"
+                  [class.hatched]="b.e.kind !== 'work'"
+                  [style.left.%]="b.left"
+                  [style.width.%]="b.ongoing ? 100 - b.left : b.width"
+                  [style.--solid]="(b.ongoing ? (b.width / (100 - b.left)) * 100 : 100) + '%'"
+                  [attr.aria-expanded]="active() === b.e.id"
+                  aria-controls="path-detail"
+                  [attr.data-cursor]="'cursor.details' | t"
+                  (pointerenter)="$event.pointerType === 'mouse' && open(b, bar)"
+                  (pointerleave)="close(b)"
+                  (focus)="open(b, bar)"
+                  (blur)="close(b)"
+                  (click)="open(b, bar)"
+                >
+                  <span class="visually-hidden">{{ b.e.role }} — {{ b.e.company }} ({{ b.years }})</span>
+                  <span class="bar-inner" aria-hidden="true">
+                    <span class="badge mono" [class.design]="b.e.pole === 'design'" aria-hidden="true">{{ badge[b.e.pole] }}</span>
+                    <span class="role">{{ b.e.role }}</span>
+                    <span class="company">{{ b.e.company }}</span>
+                    <span class="years mono">({{ b.years }})</span>
+                    @if (b.ongoing) {
+                      <svg class="chev" width="16" height="12" viewBox="0 0 16 12" aria-hidden="true">
+                        <path d="M2 1l5 5-5 5M9 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.3" />
+                      </svg>
+                    }
+                  </span>
+                </button>
+              </li>
+            }
+          </ol>
+        </div>
+      </div>
+
+      <!-- Carte de détail : flottante sur desktop, panneau sous la frise sur mobile -->
+      @if (panel(); as p) {
+        <article
+          id="path-detail"
+          class="card"
+          [class.visible]="shown()"
+          [class.flip]="cardPos().flip"
+          [style.left.px]="cardPos().flip ? null : cardPos().x"
+          [style.right.px]="cardPos().flip ? cardPos().right : null"
+          [style.top.px]="cardPos().y"
+          aria-live="polite"
+        >
+          <header class="mono">
+            <span>{{ p.e.kind_label }}</span>
+            <span class="accent">{{ p.duration }}</span>
+          </header>
+          <h3>{{ p.e.role }}</h3>
+          <p class="where mono">{{ p.e.company }}{{ p.e.location ? ' · ' + p.e.location : '' }}</p>
+          @if (p.e.description) {
+            <p class="desc">{{ p.e.description }}</p>
+          }
+          <footer class="mono">
+            <span>{{ p.e.start.slice(0, 7).replace('-', '.') }} → {{ p.e.end ? p.e.end.slice(0, 7).replace('-', '.') : ('path.todayLower' | t) }}</span>
+            <span class="pole">{{ 'path.pole' | t }} {{ badge[p.e.pole] }}</span>
+          </footer>
+        </article>
+      }
+    </div>
+  }
+</section>

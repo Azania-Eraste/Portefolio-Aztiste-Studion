@@ -1,0 +1,337 @@
+// Timeline façon Gantt — inspirée de bryangarage.dev
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+  color: var(--muted);
+}
+
+.hint-touch {
+  display: none;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.sw {
+  width: 22px;
+  height: 10px;
+  border: 1px solid var(--line-strong);
+}
+
+.sw-side {
+  background: repeating-linear-gradient(-45deg, var(--line-strong) 0 1px, transparent 1px 5px);
+}
+
+.sw-now {
+  border-color: var(--accent);
+  background: linear-gradient(90deg, rgba(255, 110, 16, 0.6), transparent);
+}
+
+.gantt {
+  position: relative;
+}
+
+.track {
+  --year: calc(100% / var(--years));
+  position: relative;
+  padding: 56px 0 24px;
+  // Lignes d'années + graduations trimestrielles
+  background:
+    linear-gradient(to right, var(--line) 1px, transparent 1px) 0 0 / var(--year) 100% repeat-x,
+    linear-gradient(to right, rgba(242, 242, 236, 0.035) 1px, transparent 1px) 0 0 / calc(var(--year) / 4) 100%
+      repeat-x;
+}
+
+.axis {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 40px;
+}
+
+.year {
+  position: absolute;
+  top: 12px;
+  padding-left: 8px;
+  color: var(--muted);
+  font-size: 11px;
+
+  &.future {
+    opacity: 0.4;
+  }
+}
+
+.today {
+  position: absolute;
+  top: 36px;
+  bottom: 0;
+  z-index: 3;
+  width: 1px;
+  background: linear-gradient(var(--accent), rgba(255, 110, 16, 0.15));
+  pointer-events: none;
+
+  .pin {
+    position: absolute;
+    top: -6px;
+    left: -4px;
+    width: 9px;
+    height: 14px;
+    border-radius: 5px;
+    background: var(--accent);
+    box-shadow: 0 0 16px rgba(255, 110, 16, 0.8);
+  }
+
+  .tag {
+    position: absolute;
+    top: -6px;
+    left: 10px;
+    font-size: 10px;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+}
+
+.rows {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  position: relative;
+  height: 44px;
+
+  &.is-active {
+    z-index: 5;
+  }
+}
+
+.bar {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  min-width: max-content;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  background: rgba(12, 12, 12, 0.92);
+  text-align: left;
+  transition:
+    border-color 0.3s,
+    background-color 0.3s,
+    box-shadow 0.4s var(--ease-out);
+
+  &:hover,
+  &[aria-expanded='true'] {
+    border-color: var(--fg);
+    background-color: #151515;
+  }
+
+  &:focus-visible {
+    outline-offset: 3px;
+  }
+
+  // Formation & freelance : hachures
+  &.hatched {
+    background:
+      repeating-linear-gradient(-45deg, rgba(242, 242, 236, 0.07) 0 1px, transparent 1px 8px),
+      rgba(12, 12, 12, 0.92);
+    border-color: var(--line);
+
+    &:hover,
+    &[aria-expanded='true'] {
+      border-color: var(--fg);
+    }
+  }
+
+  // En cours : lueur orange qui s'estompe au-delà d'aujourd'hui
+  &.ongoing {
+    border-color: rgba(255, 110, 16, 0.7);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 110, 16, 0.32) 0%,
+      rgba(255, 110, 16, 0.14) var(--solid),
+      rgba(255, 110, 16, 0) 100%
+    );
+    box-shadow: 0 10px 40px -14px rgba(255, 110, 16, 0.7);
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--solid) + 15%), transparent 100%);
+    mask-image: linear-gradient(90deg, #000 calc(var(--solid) + 15%), transparent 100%);
+
+    &:hover,
+    &[aria-expanded='true'] {
+      border-color: var(--accent);
+      box-shadow: 0 10px 50px -10px rgba(255, 110, 16, 0.9);
+    }
+  }
+}
+
+.bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.badge {
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  font-size: 10px;
+  text-transform: none;
+
+  &.design {
+    background: var(--fg);
+    border-color: var(--fg);
+    color: var(--bg);
+  }
+}
+
+.role {
+  font-weight: 600;
+}
+
+.company {
+  color: var(--muted);
+}
+
+.years {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: none;
+
+  .ongoing & {
+    color: var(--accent);
+  }
+}
+
+.chev {
+  margin-left: 24px;
+  color: var(--accent);
+}
+
+// --- Carte de détail ------------------------------------------------------
+
+.card {
+  position: absolute;
+  z-index: 20;
+  width: 360px;
+  padding: 20px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--bg-raised);
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  opacity: 0;
+  transform-origin: bottom left;
+  transform: translateY(calc(-100% - 14px)) scale(0.96);
+  transition:
+    opacity 0.25s,
+    transform 0.45s var(--ease-out);
+
+  &.flip {
+    transform-origin: bottom right;
+  }
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(calc(-100% - 14px));
+  }
+
+  header,
+  footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  h3 {
+    margin: 18px 0 6px;
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    font-stretch: 112%;
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+
+  .where {
+    margin: 0;
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  .desc {
+    margin: 16px 0;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  footer {
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+
+  .pole {
+    color: var(--fg);
+  }
+}
+
+// --- Écrans tactiles / étroits : frise défilante + panneau fixe ------------
+
+@media (hover: none), (max-width: 900px) {
+  .hint-desktop {
+    display: none;
+  }
+
+  .hint-touch {
+    display: inline;
+  }
+
+  .scroller {
+    overflow-x: auto;
+    margin: 0 calc(var(--gutter) * -1);
+    padding: 0 var(--gutter);
+    scrollbar-width: none;
+  }
+
+  .track {
+    min-width: 880px;
+  }
+
+  .card,
+  .card.visible {
+    position: static;
+    width: auto;
+    margin-top: 24px;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+}

@@ -1,0 +1,83 @@
+<section class="works" id="work" tabindex="-1" aria-labelledby="work-title">
+  <div class="pin" #pin>
+    <p class="ghost display" aria-hidden="true">{{ 'work.ghost' | t }}</p>
+
+    <header class="head">
+      <p class="label">{{ 'work.label' | t }}</p>
+      <h2 id="work-title" class="display title">
+        {{ 'work.t1' | t }} <span class="accent last">{{ 'work.t2' | t }}<app-brush class="stroke" /></span>
+      </h2>
+
+      @if (state().status === 'ready') {
+        <div class="filters" role="group" [attr.aria-label]="'work.filter' | t">
+          @for (f of filters; track f.id) {
+            <button type="button" class="mono" [attr.aria-pressed]="filter.value() === f.id" (click)="filter.value.set(f.id)">
+              {{ f.label | t }} <span class="n">{{ countFor(f.id) }}</span>
+            </button>
+          }
+        </div>
+        <p class="visually-hidden" aria-live="polite">{{ 'work.shown' | t: { n: visible().length } }}</p>
+      }
+    </header>
+
+    @switch (state().status) {
+      @case ('loading') {
+        <p class="label state" aria-live="polite">&gt; fetch /api/projects …</p>
+      }
+      @case ('error') {
+        <p class="label state" role="alert">
+          &gt; {{ 'api.down' | t }} <code>python manage.py runserver</code>
+        </p>
+      }
+      @default {
+        <div class="viewport" #viewport>
+          <ol class="track" #track>
+            @for (p of visible(); track p.id; let i = $index) {
+              <li class="card">
+                <article [attr.aria-labelledby]="'p-' + p.id">
+                  <!-- Même nom de transition que la couverture de l'étude de cas -->
+                  <a class="frame" [routerLink]="['/projets', p.slug]" [style.view-transition-name]="'p-' + p.slug"
+                    [attr.data-cursor]="'cursor.case' | t" tabindex="-1" aria-hidden="true">
+                    <span class="label-tag mono"><span class="dot"></span>{{ p.title }} / {{ pad(i + 1) }}</span>
+                    @if (p.cover) {
+                      <img [src]="p.cover" alt="" loading="lazy" />
+                    } @else {
+                      <div class="gen" [style.--c]="p.accent">
+                        <span class="display">{{ initials(p) }}</span>
+                        <span class="mono">{{ p.category }} · {{ p.year }}</span>
+                      </div>
+                    }
+                  </a>
+
+                  <div class="meta">
+                    <h3 [id]="'p-' + p.id">
+                      <a [routerLink]="['/projets', p.slug]" [attr.aria-describedby]="'read-' + p.id">{{ p.title }}</a>
+                      <span class="visually-hidden" [id]="'read-' + p.id">{{ 'work.read' | t }}</span>
+                    </h3>
+                    <p class="mono line">
+                      <span class="tag" [class.design]="p.pole === 'design'">{{ p.pole === 'design' ? 'Design' : 'Dev' }}</span>
+                      {{ p.category }} · {{ p.year }}
+                    </p>
+                    <p class="summary">{{ p.summary }}</p>
+                    <ul class="stack mono" [attr.aria-label]="'work.tools' | t">
+                      @for (s of p.stack; track s) {
+                        <li>{{ s }}</li>
+                      }
+                    </ul>
+                  </div>
+                </article>
+              </li>
+            }
+          </ol>
+        </div>
+
+        <footer class="outro">
+          <p class="display total">
+            {{ 'work.total' | t }} <span class="accent">{{ 'work.totalN' | t: { n: pad(state().data.length) } }}</span>
+          </p>
+          <p class="mono">{{ 'work.sign' | t }}</p>
+        </footer>
+      }
+    }
+  </div>
+</section>
